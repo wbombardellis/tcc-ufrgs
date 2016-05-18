@@ -1,0 +1,46 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.1 }
+
+\bibitem[Diskin 2011]{diskin2011model}
+\abntrefinfo{Diskin}{DISKIN}{2011}
+{DISKIN, Z. Model synchronization: Mappings, tiles, and categories. In:
+  \textbf{Generative and Transformational Techniques in Software Engineering
+  III}. [S.l.]: Springer, 2011. p. 92--165.}
+
+\bibitem[Ehrig et al. 2007]{ehrig2007information}
+\abntrefinfo{Ehrig et al.}{EHRIG et al.}{2007}
+{EHRIG, H. et al. Information preserving bidirectional model transformations.
+  In:  \textbf{Fundamental Approaches to Software Engineering}. [S.l.]:
+  Springer, 2007. p. 72--86.}
+
+\bibitem[Favre 2004]{favre2004foundations2}
+\abntrefinfo{Favre}{FAVRE}{2004a}
+{FAVRE, J.-M. Foundations of meta-pyramids: languages vs. metamodels. In:
+  CITESEER. \textbf{Episode II. Story of Thotus the Baboon, Procs. Dagstuhl
+  Seminar}. [S.l.], 2004. v.~4101.}
+
+\bibitem[Favre 2004]{favre2004foundations}
+\abntrefinfo{Favre}{FAVRE}{2004b}
+{FAVRE, J.-M. Foundations of model (driven)(reverse) engineering: Models. In:
+  \textbf{Proceedings of the International Seminar on Language Engineering for
+  Model-Driven Software Development, Dagstuhl Seminar 04101}. [S.l.: s.n.],
+  2004.}
+
+\bibitem[Giese, Hildebrandt and Lambers 2010]{giese2010toward}
+\abntrefinfo{Giese, Hildebrandt and Lambers}{GIESE; HILDEBRANDT; LAMBERS}{2010}
+{GIESE, H.; HILDEBRANDT, S.; LAMBERS, L. Toward bridging the gap between formal
+  semantics and implementation of triple graph grammars. In:  IEEE.
+  \textbf{Model-Driven Engineering, Verification, and Validation (MoDeVVa),
+  2010 Workshop on}. [S.l.], 2010. p. 19--24.}
+
+\bibitem[Hermann et al. 2011]{hermann2011correctness}
+\abntrefinfo{Hermann et al.}{HERMANN et al.}{2011}
+{HERMANN, F. et al. Correctness of model synchronization based on triple graph
+  grammars. In:  \textbf{Model Driven Engineering Languages and Systems}.
+  [S.l.]: Springer, 2011. p. 668--682.}
+
+\end{thebibliography}
