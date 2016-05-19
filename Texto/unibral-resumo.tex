@@ -44,6 +44,12 @@
 \setlength{\belowcaptionskip}{10pt plus 3pt minus 2pt} % espaço depois de caption
 \usepackage{amssymb}
 
+% Para algoritmos
+\usepackage{amsfonts}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+
 \usepackage[alf,abnt-emphasize=bf]{abntex2cite}	% pacote para usar citações abnt
 
 %
@@ -108,13 +114,12 @@
 % palavras-chave
 % iniciar todas com letras minúsculas, exceto no caso de abreviaturas
 %
-\keyword{Model Synchronization}
-\keyword{Java Metamodels}
-\keyword{Network of Models}
-\keyword{Iterative Model Transformation}
-\keyword{Model Transformation}
-\keyword{Model-driven Engineering}
-\keyword{Software Engineering}
+\keyword{Sincronização de Modelos}
+\keyword{Metamodelos Java}
+\keyword{Rede de Modelos}
+\keyword{Transformação de Modelos}
+\keyword{Desenvolvimento Orientado a Modelos}
+\keyword{Engenharia de Software}
 
 %\settowidth{\seclen}{1.10~}
 
@@ -191,13 +196,46 @@ Para representar alguns aspectos comportamentais,\textbf{ \textit{UMLSequenceDia
 
 O metamodelo \textbf{\textit{UMLContract}} é baseado nas ideias de programação por contrato, onde operações têm restrições (\textit{constraints}) de pré e pós-condição assim como de invariante. Sua relação com \textit{Java} é que cada restrição dos contratos pode ser (1) testada através de asserções (\textit{assertions}) e (2) expressa em termos de anotações no modelo \textit{Java}. Além disso, pode-se ter métodos de checagem de consistência interna de classe que verificam as restrições da classe e, portanto, devem ser mantidas sincronizadas com os modelos de \textit{UMLContract} (i.e. os contratos). Desta maneira, as relações desenvolvidas neste trabalho estabelecem que cada restrição de \textit{UMLContract} corresponde a uma anotação (sobre um método ou atributo) de \textit{Java}, assim como uma asserção pertencente a um método de checagem da classe.
 
-%TODO: DESCORRER SOBRE A AVALIAÇÃO
+As três relações comentadas acima (\textit{UMLClassDiagram2Java}, \textit{UMLSequenceDiagram2Java} e \textit{UMLContract2Java}) foram desenvolvidas usando TGGs e avaliadas através de alguns cenários de exemplo, onde o plug-in Eclipse \emph{MoTE} utiliza as TGGs para executar transformações para a frente (\textit{forward transformations}) entre os modelos-exemplo. As relações escritas não são completas, porém oferecem soluções para algumas situações, o que parece ser contributivo para a pesquisa com TGGs. A relação \textit{UMLContract2Java} mostra como transformações entre contratos podem ser transformados em anotações e asserções em Java. A relação \textit{UMLSequenceDiagram2Java} mostra como a informação de sequência de trocas de mensagens entre classes pode ser transformada em meta-informação no modelo \textit{Java} através de anotações que codificam a ordem que as respectivas chamadas a métodos devem ser executadas. E, finalmente, a relação \
+{UMLClassDiagram2Java} apresenta a transformação quase um-para-um entre os elementos de cada metamodelo.
 
 %TODO: Talvez Figura 4.10 + comentá-la
 
 \section{Sincronização de Modelos no Espaço Tecnológico Java}
 
+Cada TGG da seção anterior representa uma aresta da rede de metamodelos construída neste trabalho e cada aresta pode ser vista como um problema de sincronização independente entre dois metamodelos. Grande parte da pesquisa acadêmica atual lida com tal problema. Porém, para a nossa abordagem é necessário que toda a rede seja mantida atualizada. Isto é, necessita-se um algoritmo de sincronização para uma rede de modelos. Portanto, este trabalho propõe um \textbf{algoritmo para a sincronização de toda uma rede de modelos} que utiliza um método de sincronização entre dois modelos já existente.
+
+%TODO: Talvez Figura 5.1 + comentá-la
+
+O algoritmo $netsync$ abaixo realiza, portanto, a partir de uma rede de modelos sincronizada $(V_0,E_0)$ e um dado modelo $s_0$, cujas modificações $\delta_s$ geram $s_1$, a alteração de $s_0$ por $s_1$, assim como as devidas alterações dos vizinhos $N(s_0)$ de $s_0$, conforme as regras definidas na respectiva TGG. A chamada recursiva a $netsync$ garante que essas alterações sejam propagadas ao longo da rede $(V_0,E_0)$.
+
+Garantidas as suposições de que (1) apenas um modelo é modificado por vez em $(V_0,E_0)$, (2) uma sincronização tem apenas uma direção (ou para frente ou para trás), (3) a rede de entrada $(V_0,E_0)$ é finita e acíclica e (4) $sync$ não modifica o modelo alvo, se esse já está sincronizado, então $netsync$ (1) sempre termina, (2) é determinístico e (3) tem complexidade temporal no pior dos casos polinomial, se a sincronização entre dois modelos ($sync$) tem complexidade polinomial.
+
+%netsync Algorithm
+\begin{algorithm}[H]
+	\setstretch{1}
+	\caption{netsync Algorithm}
+	\begin{algorithmic}[1]
+		\Function{netsync}{$(V_0,E_0), s_0, s_1, \delta_s$}
+		\State $(V_i,E_i) \leftarrow ((V_0 \setminus s_0) \cup s_1, E_0)$ \Comment{Nova rede com a primeira modificação}
+		\ForAll{$n_i = N(s_0)$}
+			\State $(n_{i_{new}}, \delta_n) \leftarrow sync(s_0, s_1, \delta_s, n_i)$ \Comment{Atualiza vizinho}
+			\If{$\delta_n$ not empty} \Comment{Se modificou o vizinho}
+				\State $(V_i,E_i) \leftarrow netsync((V_i,E_i), n_i, n_{i_{new}}, \delta_n)$ \Comment{Atualiza recursivamente}
+			\EndIf
+		\EndFor
+		\State \Return $(V_i, E_i)$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
 \section{Conclusão}
+Este trabalho desenvolve a definição formal de alguns metamodelos do espaço tecnológico Java, contribuindo com disponibilização de tais metamodelos para uso futuro em pesquisas acadêmicas e na industria; a definição de algumas relações entre esses metamodelos usando TGGs, demonstrando lados positivos e negativos no uso de TGGs para tal fim; uma nova visão do problema de sincronização de modelos através da chamada rede de metamodelos, que abstrai as interdependências entre artefatos de software; a avaliação dos resultados através da demonstração de transformações de modelos em um estudo de caso no espaço tecnológico Java; e, por fim, a proposta de um algoritmo determinístico e que sempre para para a sincronização de uma rede de metamodelos.
+
+Os \textbf{metamodelos} não são completos, como por exemplo o metamodelo Java, que não codifica informações comportamentais da gramática Java (e.g. $statements$), porém são de tamanho suficiente para este trabalho. As \textbf{relações}, por sua vez, poderiam ser mais extensivas, como a relação \textit{UMLSequenceDiagram2Java}, que poderia capturar maior informação do diagrama de sequência, que não somente a ordem da ocorrência das mensagens, porém também condições de guarda e restrições de tempo (vide \citet{omg2007unified}). O algoritmo proposto $netsync$ é claramente uma sugestão inicial, mas que apresenta uma visão inédita do problema. A restrição de que a rede de entrada não pode ter ciclos, reduz seu poder, porém a presença de ciclos requiriria um algoritmo capaz de lidar com modificações de mais de um modelo da rede.
+ 
+Trabalho contributivo em direção à aplicação de conceitos teóricos de TGG em um caso prático de sincronização de modelos.
+
 
 
 % referências

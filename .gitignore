@@ -1,0 +1,7 @@
+/Texto/*.aux
+/Texto/*.log
+/Texto/*.out
+/Texto/*.pdf
+/Texto/*.gz
+*.*~
+/*/*.*~
