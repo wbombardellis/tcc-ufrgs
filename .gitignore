@@ -3,5 +3,7 @@
 /Texto/*.out
 /Texto/*.pdf
 /Texto/*.gz
+/Texto/*.bbl
+/Texto/*.blg
 *.*~
 /*/*.*~
